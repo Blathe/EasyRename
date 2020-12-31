@@ -1,0 +1,30 @@
+﻿<Window x:Name="Main_Window" x:Class="EasyRename.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyRename"
+        mc:Ignorable="d"
+        Title="Easy Rename" Height="246" Width="539" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="491*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="Rename" Content="Rename;" Grid.Column="1" HorizontalAlignment="Left" Margin="382,175,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.907,-1" Height="20"/>
+        <Button Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="282,175,0,0" VerticalAlignment="Top" Width="75" Height="20" Click="Button_Click"/>
+        <ComboBox x:Name="FormatBox" HorizontalAlignment="Left" Margin="20,43,0,0" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" SelectedIndex="0">
+            <ListBoxItem Content="Add Text"/>
+            <ListBoxItem Content="Replace Text"/>
+        </ComboBox>
+        <ListBox x:Name="File_Box" HorizontalAlignment="Left" Height="80" Margin="20,115,0,0" VerticalAlignment="Top" Width="305" Grid.ColumnSpan="2">
+        </ListBox>
+        <TextBlock HorizontalAlignment="Left" Margin="20,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="90"><Run Text="New File Names:"/><LineBreak/><Run/></TextBlock>
+        <TextBox x:Name="TextToAdd" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="187,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265"/>
+        <TextBlock x:Name="TextBoxTitle" Grid.Column="1" HorizontalAlignment="Left" Margin="92,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Adding:" Height="23" FontSize="16"/>
+        <RadioButton x:Name="BeforeName" Content="Before Name" Grid.Column="1" HorizontalAlignment="Left" Margin="187,75,0,0" VerticalAlignment="Top" Height="20"/>
+        <RadioButton x:Name="AfterName" Content="After Name" Grid.Column="1" HorizontalAlignment="Left" Margin="312,75,0,0" VerticalAlignment="Top" Height="20"/>
+        <TextBlock Grid.Column="1" Margin="10,11,53,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="Drag multiple files onto this window to bulk rename."/><LineBreak/><Run/></TextBlock>
+
+    </Grid>
+</Window>

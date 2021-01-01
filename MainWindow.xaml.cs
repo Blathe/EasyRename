@@ -54,9 +54,12 @@ namespace EasyRename
             InitializeComponent();
         }
 
-        //Drag and Drop functionality for multiple files
+        /// <summary>
+        /// Logic for loading multiple files that are dragged from Explorer onto the program window.
+        /// </summary>
         private void WindowDrop(object sender, DragEventArgs e)
         {
+            ClearFiles();
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 //Grab all files dropped onto the window frame
@@ -74,6 +77,9 @@ namespace EasyRename
             }
         }
 
+        /// <summary>
+        /// Sets the Example File and updates the Example_Text with the example file's name.
+        /// </summary>
         public void SetExampleFile()
         {
             if (fileList != null & fileList.Count != 0)
@@ -84,9 +90,11 @@ namespace EasyRename
             }
         }
 
+        /// <summary>
+        /// Updates the text shown in the Example_Text field.
+        /// </summary>
         public void RefreshExampleText()
         {
-            SetExampleFile();
             if (exampleFile != null)
             {
                 if (AfterName.IsChecked == true)
@@ -197,7 +205,14 @@ namespace EasyRename
                                     fileExtension = System.IO.Path.GetExtension(file);
                                     string newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
 
-                                    System.IO.File.Move(file, newName);
+                                    try
+                                    {
+                                        System.IO.File.Move(file, newName);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        NotifyException(ex);
+                                    }
                                     filesToRemove.Add(file);
                                     filesToAdd.Add(newName);
                                     numberOfFilesRenamed++;
@@ -231,7 +246,15 @@ namespace EasyRename
                                 if (file.Contains(textToReplace))
                                 {
                                     newFileName = file.Replace(textToReplace, replaceTextWith);
-                                    System.IO.File.Move(file, newFileName);
+
+                                    try
+                                    {
+                                        System.IO.File.Move(file, newFileName);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        NotifyException(ex);
+                                    }
 
                                     filesToRemove.Add(file);
                                     filesToAdd.Add(newFileName);
@@ -252,8 +275,12 @@ namespace EasyRename
             }
         }
 
+        /// <summary>
+        /// Checks for invalid characters when trying to rename files.
+        /// </summary>
         public bool ContainsInvalidChars()
         {
+            //TODO: Add more checks depending on what box the user is typing into.
             if (!Regex.IsMatch(TextToAdd_Box.Text, invalidCharPattern))
             {
                 return false;
@@ -262,11 +289,11 @@ namespace EasyRename
                 return true;
             }
         }
-
+          
         public void NotifyException(Exception ex)
         {
             string msg = ex.ToString();
-            MessageBoxResult result = MessageBox.Show(this, msg);
+            MessageBoxResult result = MessageBox.Show(this, ex.GetType().ToString());
         }
 
         public void NotifyInvalidFileName()
@@ -277,6 +304,7 @@ namespace EasyRename
         {
             MessageBoxResult result = MessageBox.Show(this, "You have not selected any files to rename...");
         }
+
 
         public void NotifyAmountRenamed()
         {
@@ -292,6 +320,9 @@ namespace EasyRename
             numberOfFilesRenamed = 0;
         }
 
+        /// <summary>
+        /// Removes old file names from the fileList List, then adds the newly renamed file names back to the list, and finally refreshes the File Box display.
+        /// </summary>
         public void RefreshFileList()
         {
             foreach (string file in filesToRemove)
@@ -311,6 +342,9 @@ namespace EasyRename
             RefreshExampleText();
         }
 
+        /// <summary>
+        /// Logic for refreshing the File Box display.
+        /// </summary>
         public void RefreshDisplayBox()
         {
             File_Display_Box.Items.Clear();
@@ -323,7 +357,9 @@ namespace EasyRename
             }
         }
 
-        //clear all files and the fileList if it's populated.
+        /// <summary>
+        /// Clears all files in the fileList and removes any displays.
+        /// </summary>
         public void ClearFiles()
         {
             exampleFile = null;

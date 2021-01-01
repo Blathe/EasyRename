@@ -7,7 +7,7 @@ Features:
 -Basic GUI  
 -Drag and Drop multi files  
 -Add Text Before/After file name  
--Replace Text with othter Text  
+-Replace Text with other text  
 
 To Do:  
 -Validation for file names  

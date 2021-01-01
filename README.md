@@ -5,8 +5,7 @@ Run the program, drag and drop as many files as you want onto the program, and t
 
 Features:
 Basic UI
-Drag and Drop file functionality
+Drag and Drop loading files
+Add Text renaming logic
 
-To Do:
-Renaming logic
-Right click context menu?
+[![EasyRename.gif](https://s2.gifyu.com/images/EasyRename.gif)](https://gifyu.com/image/CDUU)

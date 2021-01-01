@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,6 +46,8 @@ namespace EasyRename
         public List<string> fileList = new List<string>();
         public List<string> filesToRemove = new List<string>();
         public List<string> filesToAdd = new List<string>();
+
+        private string invalidCharPattern = "[\\<>:/\"|?*]";
 
         public MainWindow()
         {
@@ -163,39 +166,52 @@ namespace EasyRename
                 case 0:
                     if (fileList != null && fileList.Count != 0)
                     {
-                        foreach (string file in fileList)
+                        if (!ContainsInvalidChars())
                         {
-                            //Add text to end of file name.
-                            if (AfterName.IsChecked == true)
+                            foreach (string file in fileList)
                             {
-                                fileName = System.IO.Path.GetFileNameWithoutExtension(file);
-                                fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
-                                fileExtension = System.IO.Path.GetExtension(file);
-                                string newName = fileDirectory + fileName + TextToAdd_Box.Text + fileExtension;
+                                //Add text to end of file name.
+                                if (AfterName.IsChecked == true)
+                                {
+                                    fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                                    fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
+                                    fileExtension = System.IO.Path.GetExtension(file);
+                                    string newName = fileDirectory + fileName + TextToAdd_Box.Text + fileExtension;
 
-                                System.IO.File.Move(file, newName);
-                                filesToRemove.Add(file);
-                                filesToAdd.Add(newName);
-                                numberOfFilesRenamed++;
-                            }
-                            //Add text to beginning of file name.
-                            if (BeforeName.IsChecked == true)
-                            {
-                                fileName = System.IO.Path.GetFileNameWithoutExtension(file);
-                                fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
-                                fileExtension = System.IO.Path.GetExtension(file);
-                                string newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
+                                    try
+                                    {
+                                        System.IO.File.Move(file, newName);
+                                    } catch (Exception ex)
+                                    {
+                                        NotifyException(ex);
+                                    }
+                                    filesToRemove.Add(file);
+                                    filesToAdd.Add(newName);
+                                    numberOfFilesRenamed++;
+                                }
+                                //Add text to beginning of file name.
+                                if (BeforeName.IsChecked == true)
+                                {
+                                    fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                                    fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
+                                    fileExtension = System.IO.Path.GetExtension(file);
+                                    string newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
 
-                                System.IO.File.Move(file, newName);
-                                filesToRemove.Add(file);
-                                filesToAdd.Add(newName);
-                                numberOfFilesRenamed++;
+                                    System.IO.File.Move(file, newName);
+                                    filesToRemove.Add(file);
+                                    filesToAdd.Add(newName);
+                                    numberOfFilesRenamed++;
+                                }
                             }
+                            RefreshFileList();
+                            NotifyAmountRenamed();
                         }
-
-                        RefreshFileList();
-                        NotifyAmountRenamed();
-                    } else
+                        else
+                        {
+                            NotifyInvalidFileName();
+                        }
+                    }
+                    else
                     {
                         NotifyNoFilesSelected();
                     }
@@ -236,6 +252,27 @@ namespace EasyRename
             }
         }
 
+        public bool ContainsInvalidChars()
+        {
+            if (!Regex.IsMatch(TextToAdd_Box.Text, invalidCharPattern))
+            {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        public void NotifyException(Exception ex)
+        {
+            string msg = ex.ToString();
+            MessageBoxResult result = MessageBox.Show(this, msg);
+        }
+
+        public void NotifyInvalidFileName()
+        {
+            MessageBoxResult result = MessageBox.Show(this, "That file name contains invalid characters, try again.");
+        }
         public void NotifyNoFilesSelected()
         {
             MessageBoxResult result = MessageBox.Show(this, "You have not selected any files to rename...");

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyRename"
         mc:Ignorable="d"
-        Title="Easy Rename" Height="246" Width="539" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
+        Title="Easy Rename" Height="501" Width="539" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*"/>
@@ -14,8 +14,8 @@
         <Grid x:Name="AddText_Grid" Grid.Column="1" Margin="92,42,0,102">
             <TextBox x:Name="TextToAdd_Box" HorizontalAlignment="Left" Height="23" Margin="95,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="AddText_Changed"/>
             <TextBlock x:Name="TextToAdd_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Adding:" Height="23" FontSize="16" TextAlignment="Right"/>
-            <RadioButton x:Name="BeforeName" Content="Before Name" HorizontalAlignment="Left" Margin="95,33,0,0" VerticalAlignment="Top" Height="20"/>
-            <RadioButton x:Name="AfterName" Content="After Name" HorizontalAlignment="Left" Margin="220,33,0,0" VerticalAlignment="Top" Height="20"/>
+            <RadioButton x:Name="BeforeName" Content="Before Name" HorizontalAlignment="Left" Margin="95,33,0,0" VerticalAlignment="Top" Height="20" Checked="BeforeName_Checked"/>
+            <RadioButton x:Name="AfterName" Content="After Name" HorizontalAlignment="Left" Margin="220,33,0,0" VerticalAlignment="Top" Height="20" IsChecked="True" Checked="AfterName_Checked"/>
         </Grid>
         <Grid x:Name="ReplaceWith_Grid" Grid.Column="1" Margin="92,42,0,107" Visibility="Hidden">
             <Grid.RowDefinitions>
@@ -27,7 +27,7 @@
             <TextBox x:Name="ReplaceTextWith_Box" HorizontalAlignment="Left" Height="23" Margin="95,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" Grid.RowSpan="2"/>
             <TextBlock x:Name="ReplaceTextWith_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Height="23" FontSize="16" Margin="0,30,0,0" Text="With:" TextAlignment="Right" Grid.RowSpan="2"/>
         </Grid>
-        <Button x:Name="RenameButton" Content="Rename" Grid.Column="1" HorizontalAlignment="Left" Margin="357,160,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="-0.907,-1" Height="35" Background="#4C0C5D22"/>
+        <Button x:Name="RenameButton" Content="Rename" Grid.Column="1" HorizontalAlignment="Left" Margin="357,160,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="-0.907,-1" Height="35" Background="#4C0C5D22" Click="RenameButton_Click"/>
         <Button x:Name="CancelButton"  Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="367,130,0,0" VerticalAlignment="Top" Width="85" Height="20" Click="Cancel_Button_Click"/>
         <ListBox x:Name="File_Display_Box" HorizontalAlignment="Left" Height="60" Margin="20,115,0,0" VerticalAlignment="Top" Width="385" Grid.ColumnSpan="2"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="90"><Run Text="New File Names:"/><LineBreak/><Run/></TextBlock>
@@ -38,6 +38,7 @@
         </ComboBox>
         <TextBlock x:Name="Example_Title" HorizontalAlignment="Left" Margin="20,182,0,0" TextWrapping="Wrap" Text="Example: " VerticalAlignment="Top" Grid.ColumnSpan="2" Width="55" FontSize="14" Height="23"/>
         <TextBlock x:Name="Example_Text" HorizontalAlignment="Left" Margin="22,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.4,0.602" Height="23"/>
+        <TextBox x:Name="ConsoleBox" HorizontalAlignment="Left" Height="225" Margin="20,225,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="490" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

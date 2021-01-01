@@ -37,35 +37,53 @@ namespace EasyRename
         public string textToReplace;
         public string replaceTextWith;
 
+        public int numberOfFilesRenamed;
+
         //files loaded into the program
         public string[] files;
 
         public List<string> fileList = new List<string>();
+        public List<string> filesToRemove = new List<string>();
+        public List<string> filesToAdd = new List<string>();
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        public void RefreshFiles()
+        //Drag and Drop functionality for multiple files
+        private void WindowDrop(object sender, DragEventArgs e)
         {
-            if (fileList != null && fileList.Count != 0)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                foreach (string file in fileList)
+                //Grab all files dropped onto the window frame
+                string[] tempfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                for (int i = 0; i < tempfiles.Length; i++)
                 {
-                    fileName = System.IO.Path.GetFileName(file);
-                    //store file names in the File_Display_Box.
-                    File_Display_Box.Items.Add(fileName);
+                    fileList.Add(tempfiles[i]);
+                    //get rid of the directory name and just display the actual file name with extension
+                    string displayName = System.IO.Path.GetFileName(tempfiles[i]);
+                    File_Display_Box.Items.Add(displayName);
                 }
 
+                SetExampleFile();
+            }
+        }
+
+        public void SetExampleFile()
+        {
+            if (fileList != null & fileList.Count != 0)
+            {
                 exampleFile = System.IO.Path.GetFileNameWithoutExtension(fileList[0]);
                 exampleFileExtension = System.IO.Path.GetExtension(fileList[0]);
                 Example_Text.Text = exampleFile + exampleFileExtension;
             }
         }
 
-        public void UpdateText()
+        public void RefreshExampleText()
         {
+            SetExampleFile();
             if (exampleFile != null)
             {
                 if (AfterName.IsChecked == true)
@@ -94,30 +112,13 @@ namespace EasyRename
                     textToReplace = TextToReplace_Box.Text;
                     replaceTextWith = ReplaceTextWith_Box.Text;
                     Example_Text.Text = exampleFile + exampleFileExtension;
-                    if (textToReplace != "" && replaceTextWith != "")
+
+                    if (textToReplace != "")
                     {
                         exampleString = exampleFile.Replace(textToReplace, replaceTextWith);
                         Example_Text.Text = exampleString + exampleFileExtension;
                     }
                 }
-            }
-        }
-
-        //Drag and Drop functionality for multiple files
-        private void WindowDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                //Grab all files dropped onto the window frame
-                string[] tempfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                for (int i = 0; i < tempfiles.Length; i++)
-                {
-                    fileList.Add(tempfiles[i]);
-                    File_Display_Box.Items.Add(tempfiles[i]);
-                }
-
-                RefreshFiles();
             }
         }
 
@@ -131,7 +132,7 @@ namespace EasyRename
         private void RenameSelectionBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ToggleGrids(RenameSelectionBox.SelectedIndex);
-            UpdateText();
+            RefreshExampleText();
         }
 
         private void ToggleGrids(int selection)
@@ -173,6 +174,9 @@ namespace EasyRename
                                 string newName = fileDirectory + fileName + TextToAdd_Box.Text + fileExtension;
 
                                 System.IO.File.Move(file, newName);
+                                filesToRemove.Add(file);
+                                filesToAdd.Add(newName);
+                                numberOfFilesRenamed++;
                             }
                             //Add text to beginning of file name.
                             if (BeforeName.IsChecked == true)
@@ -183,9 +187,17 @@ namespace EasyRename
                                 string newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
 
                                 System.IO.File.Move(file, newName);
+                                filesToRemove.Add(file);
+                                filesToAdd.Add(newName);
+                                numberOfFilesRenamed++;
                             }
                         }
-                        ClearFiles();
+
+                        RefreshFileList();
+                        NotifyAmountRenamed();
+                    } else
+                    {
+                        NotifyNoFilesSelected();
                     }
                     break;
                 //Replace Text
@@ -204,10 +216,19 @@ namespace EasyRename
                                 {
                                     newFileName = file.Replace(textToReplace, replaceTextWith);
                                     System.IO.File.Move(file, newFileName);
+
+                                    filesToRemove.Add(file);
+                                    filesToAdd.Add(newFileName);
+                                    numberOfFilesRenamed++;
                                 }
                             }
-                            ClearFiles();
+
+                            RefreshFileList();
+                            NotifyAmountRenamed();
                         }
+                    } else
+                    {
+                        NotifyNoFilesSelected();
                     }
                     break;
                 default:
@@ -215,7 +236,57 @@ namespace EasyRename
             }
         }
 
-        //clear all files and the file array if it's populated.
+        public void NotifyNoFilesSelected()
+        {
+            MessageBoxResult result = MessageBox.Show(this, "You have not selected any files to rename...");
+        }
+
+        public void NotifyAmountRenamed()
+        {
+            if (numberOfFilesRenamed > 1)
+            {
+                MessageBoxResult result = MessageBox.Show(this, $"{numberOfFilesRenamed} files have been renamed!");
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show(this, $"{numberOfFilesRenamed} file has been renamed!");
+            }
+
+            numberOfFilesRenamed = 0;
+        }
+
+        public void RefreshFileList()
+        {
+            foreach (string file in filesToRemove)
+            {
+                fileList.Remove(file);
+            }
+
+            foreach (string file in filesToAdd)
+            {
+                fileList.Add(file);
+            }
+
+            filesToRemove.Clear();
+            filesToAdd.Clear();
+
+            RefreshDisplayBox();
+            RefreshExampleText();
+        }
+
+        public void RefreshDisplayBox()
+        {
+            File_Display_Box.Items.Clear();
+            if (fileList != null)
+            {
+                foreach (string file in fileList)
+                {
+                    File_Display_Box.Items.Add(System.IO.Path.GetFileName(file));
+                }
+            }
+        }
+
+        //clear all files and the fileList if it's populated.
         public void ClearFiles()
         {
             exampleFile = null;
@@ -239,36 +310,37 @@ namespace EasyRename
             {
                 fileList.Clear();
             }
+            numberOfFilesRenamed = 0;
         }
 
         //text changes in the text to add box
         private void AddText_Changed(object sender, TextChangedEventArgs args)
         {
-            UpdateText();
+            RefreshExampleText();
         }
 
         //after name radio dial selected
         private void AfterName_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateText();
+            RefreshExampleText();
         }
 
         //before name radio dial selected
         private void BeforeName_Checked(object sender, RoutedEventArgs e)
         {
-            UpdateText();
+            RefreshExampleText();
         }
 
         //text changes in the text to replace box
         private void TextToReplace_Box_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateText();
+            RefreshExampleText();
         }
 
         //text changes in the replace text with box
         private void ReplaceTextWith_Box_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateText();
+            RefreshExampleText();
         }
     }
 }

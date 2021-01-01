@@ -5,40 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyRename"
         mc:Ignorable="d"
-        Title="Easy Rename" Height="501" Width="539" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
-    <Grid>
+        Title="Easy Rename" Height="251" Width="593" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
+    <Grid Background="#FFECECEC">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*"/>
             <ColumnDefinition Width="491*"/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="AddText_Grid" Grid.Column="1" Margin="92,42,0,102" d:IsHidden="True">
-            <TextBox x:Name="TextToAdd_Box" HorizontalAlignment="Left" Height="23" Margin="95,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="AddText_Changed"/>
-            <TextBlock x:Name="TextToAdd_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Adding:" Height="23" FontSize="16" TextAlignment="Right"/>
-            <RadioButton x:Name="BeforeName" Content="Before Name" HorizontalAlignment="Left" Margin="95,33,0,0" VerticalAlignment="Top" Height="20" Checked="BeforeName_Checked"/>
-            <RadioButton x:Name="AfterName" Content="After Name" HorizontalAlignment="Left" Margin="220,33,0,0" VerticalAlignment="Top" Height="20" IsChecked="True" Checked="AfterName_Checked"/>
+        <Grid x:Name="AddText_Grid" Grid.Column="1" Margin="136,43,10,101" d:IsHidden="True">
+            <TextBox x:Name="TextToAdd_Box" HorizontalAlignment="Left" Height="23" Margin="95,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="AddText_Changed" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="TextToAdd_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Text="Adding:" Height="23" FontSize="16" TextAlignment="Right" Foreground="Black" FontFamily="Segoe UI Semibold"/>
+            <RadioButton x:Name="BeforeName" Content="Before Name" HorizontalAlignment="Left" Margin="95,33,0,0" VerticalAlignment="Top" Height="20" Checked="BeforeName_Checked" Foreground="Black" FontSize="14" FontFamily="Segoe UI Semibold"/>
+            <RadioButton x:Name="AfterName" Content="After Name" HorizontalAlignment="Left" Margin="220,33,0,0" VerticalAlignment="Top" Height="20" IsChecked="True" Checked="AfterName_Checked" Foreground="Black" FontSize="14" FontFamily="Segoe UI Semibold"/>
         </Grid>
-        <Grid x:Name="ReplaceWith_Grid" Grid.Column="1" Margin="92,42,0,107">
+        <Grid x:Name="ReplaceWith_Grid" Grid.Column="1" Margin="136,43,10,106">
             <Grid.RowDefinitions>
                 <RowDefinition Height="33*"/>
                 <RowDefinition Height="20*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="TextToReplace_Box" HorizontalAlignment="Left" Height="23" Margin="95,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="TextToReplace_Box_TextChanged"/>
-            <TextBlock x:Name="TextToReplace_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Height="23" FontSize="16" TextAlignment="Right"><Run Text="Replace:"/><LineBreak/><Run/></TextBlock>
-            <TextBox x:Name="ReplaceTextWith_Box" HorizontalAlignment="Left" Height="23" Margin="95,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" Grid.RowSpan="2" TextChanged="ReplaceTextWith_Box_TextChanged"/>
-            <TextBlock x:Name="ReplaceTextWith_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Height="23" FontSize="16" Margin="0,30,0,0" Text="With:" TextAlignment="Right" Grid.RowSpan="2"/>
+            <TextBox x:Name="TextToReplace_Box" HorizontalAlignment="Left" Height="23" Margin="95,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="TextToReplace_Box_TextChanged" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="TextToReplace_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Height="23" FontSize="16" TextAlignment="Right" Foreground="Black" FontFamily="Segoe UI Semibold"><Run Text="Replace:"/><LineBreak/><Run/></TextBlock>
+            <TextBox x:Name="ReplaceTextWith_Box" HorizontalAlignment="Left" Height="23" Margin="95,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" Grid.RowSpan="2" TextChanged="ReplaceTextWith_Box_TextChanged" FontFamily="Segoe UI Semibold"/>
+            <TextBlock x:Name="ReplaceTextWith_Title" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" Height="23" FontSize="16" Margin="0,30,0,0" TextAlignment="Right" Grid.RowSpan="2" FontFamily="Segoe UI Semibold" Foreground="Black"><Run Text="With"/><Run Text=":"/></TextBlock>
         </Grid>
-        <Button x:Name="RenameButton" Content="Rename" Grid.Column="1" HorizontalAlignment="Left" Margin="357,160,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="-0.907,-1" Height="35" Background="#4C0C5D22" Click="RenameButton_Click"/>
-        <Button x:Name="CancelButton"  Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="367,130,0,0" VerticalAlignment="Top" Width="85" Height="20" Click="Cancel_Button_Click"/>
-        <ListBox x:Name="File_Display_Box" HorizontalAlignment="Left" Height="60" Margin="20,115,0,0" VerticalAlignment="Top" Width="385" Grid.ColumnSpan="2"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="90"><Run Text="New File Names:"/><LineBreak/><Run/></TextBlock>
-        <TextBlock Grid.Column="1" Margin="10,11,53,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="19"><Run Text="Drag multiple files onto this window to quick rename."/><LineBreak/><Run/></TextBlock>
-        <ComboBox x:Name="RenameSelectionBox" HorizontalAlignment="Left" Margin="20,43,0,0" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" SelectedIndex="0" SelectionChanged="RenameSelectionBox_SelectionChanged">
+        <Button x:Name="RenameButton" Content="Rename" Grid.Column="1" HorizontalAlignment="Left" Margin="401,170,0,0" VerticalAlignment="Top" Width="95" RenderTransformOrigin="-0.907,-1" Height="35" Background="White" Click="RenameButton_Click" FontSize="16" Foreground="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" FontFamily="Segoe UI Semibold"/>
+        <Button x:Name="CancelButton"  Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="401,140,0,0" VerticalAlignment="Top" Width="95" Height="20" Click="Cancel_Button_Click" Background="White" Foreground="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" FontFamily="Segoe UI Semibold"/>
+        <ListBox x:Name="File_Display_Box" HorizontalAlignment="Left" Height="62" Margin="20,115,0,0" VerticalAlignment="Top" Width="420" Grid.ColumnSpan="2" FontFamily="Segoe UI Semibold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="135" FontSize="14" Foreground="Black" FontFamily="Segoe UI Semibold"><Run Text="Files To Rename:"/><LineBreak/><Run/></TextBlock>
+        <TextBlock Grid.Column="1" Margin="10,11,53,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="19" FontFamily="Segoe UI Semibold" Foreground="Black"><Run Text="Drag multiple files onto this window to quick rename."/><LineBreak/><Run/></TextBlock>
+        <ComboBox x:Name="RenameSelectionBox" HorizontalAlignment="Left" Margin="20,43,0,0" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="2" SelectedIndex="0" SelectionChanged="RenameSelectionBox_SelectionChanged" FontSize="14" FontFamily="Segoe UI Semibold">
             <ListBoxItem Content="Add Text"/>
             <ListBoxItem Content="Replace Text"/>
         </ComboBox>
-        <TextBlock x:Name="Example_Title" HorizontalAlignment="Left" Margin="20,182,0,0" TextWrapping="Wrap" Text="Example: " VerticalAlignment="Top" Grid.ColumnSpan="2" Width="55" FontSize="14" Height="23"/>
-        <TextBlock x:Name="Example_Text" HorizontalAlignment="Left" Margin="22,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.4,0.602" Height="23"/>
-        <TextBox x:Name="ConsoleBox" HorizontalAlignment="Left" Height="225" Margin="20,225,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="490" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="Example_Title" HorizontalAlignment="Left" Margin="20,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="55" FontSize="14" Height="23" Foreground="Black" FontFamily="Segoe UI Semibold"><Run Text="Example"/><Run Text=": "/></TextBlock>
+        <TextBlock x:Name="Example_Text" HorizontalAlignment="Left" Margin="22,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.4,0.602" Height="23" Foreground="Black" FontFamily="Segoe UI Semibold"/>
 
     </Grid>
 </Window>

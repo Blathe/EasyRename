@@ -40,6 +40,8 @@ namespace EasyRename
         //files loaded into the program
         public string[] files;
 
+        public List<string> fileList = new List<string>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -47,24 +49,24 @@ namespace EasyRename
 
         public void RefreshFiles()
         {
-            if (files != null)
+            if (fileList != null && fileList.Count != 0)
             {
-                foreach (string file in files)
+                foreach (string file in fileList)
                 {
                     fileName = System.IO.Path.GetFileName(file);
                     //store file names in the File_Display_Box.
                     File_Display_Box.Items.Add(fileName);
                 }
 
-                exampleFile = System.IO.Path.GetFileNameWithoutExtension(files[0]);
-                exampleFileExtension = System.IO.Path.GetExtension(files[0]);
+                exampleFile = System.IO.Path.GetFileNameWithoutExtension(fileList[0]);
+                exampleFileExtension = System.IO.Path.GetExtension(fileList[0]);
                 Example_Text.Text = exampleFile + exampleFileExtension;
             }
         }
 
         public void UpdateText()
         {
-            if (Example_Text != null && exampleFile != null)
+            if (exampleFile != null)
             {
                 if (AfterName.IsChecked == true)
                 {
@@ -107,24 +109,22 @@ namespace EasyRename
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 //Grab all files dropped onto the window frame
-                files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                string[] tempfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                for (int i = 0; i < tempfiles.Length; i++)
+                {
+                    fileList.Add(tempfiles[i]);
+                    File_Display_Box.Items.Add(tempfiles[i]);
+                }
 
                 RefreshFiles();
             }
-        }
-
-        //Fired any time the text changes in the AddText box.
-        private void AddText_Changed(object sender, TextChangedEventArgs args)
-        {
-            UpdateText();
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
             //Clear all loaded files, and clear the example text under the file box.
             ClearFiles();
-            File_Display_Box.Items.Clear();
-            Example_Text.Text = "";
         }
 
         //Toggles the grid visibility options for Add Text or Replace Text
@@ -160,9 +160,9 @@ namespace EasyRename
             {
                 //Add Text
                 case 0:
-                    if (files != null && files.Length != 0)
+                    if (fileList != null && fileList.Count != 0)
                     {
-                        foreach (string file in files)
+                        foreach (string file in fileList)
                         {
                             //Add text to end of file name.
                             if (AfterName.IsChecked == true)
@@ -186,22 +186,19 @@ namespace EasyRename
                             }
                         }
                         ClearFiles();
-                    } else
-                    {
-                        return;
                     }
                     break;
                 //Replace Text
                 case 1:
-                    if (files != null && files.Length != 0)
+                    if (fileList != null && fileList.Count != 0)
                     {
                         textToReplace = TextToReplace_Box.Text;
                         replaceTextWith = ReplaceTextWith_Box.Text;
-                        string newFileName = "";
+                        string newFileName;
 
                         if (textToReplace != null && replaceTextWith != null)
                         {
-                            foreach (string file in files)
+                            foreach (string file in fileList)
                             {
                                 if (file.Contains(textToReplace))
                                 {
@@ -209,8 +206,8 @@ namespace EasyRename
                                     System.IO.File.Move(file, newFileName);
                                 }
                             }
+                            ClearFiles();
                         }
-                        ClearFiles();
                     }
                     break;
                 default:
@@ -218,43 +215,57 @@ namespace EasyRename
             }
         }
 
+        //clear all files and the file array if it's populated.
         public void ClearFiles()
         {
-            if (files != null && files.Length != 0)
+            exampleFile = null;
+            exampleFileExtension = null;
+            exampleString = null;
+
+            fileName = null;
+            fileExtension = null;
+            fileDirectory = null;
+
+            textToAddAfter = null;
+            textToAddBefore = null;
+
+            textToReplace = null;
+            replaceTextWith = null;
+
+            File_Display_Box.Items.Clear();
+            Example_Text.Text = "";
+
+            if (fileList != null && fileList.Count != 0)
             {
-                Array.Clear(files, 0, files.Length);
+                fileList.Clear();
             }
-            exampleFile = "";
-            exampleFileExtension = "";
-            exampleString = "";
+        }
 
-            fileName = "";
-            fileExtension = "";
-            fileDirectory = "";
+        //text changes in the text to add box
+        private void AddText_Changed(object sender, TextChangedEventArgs args)
+        {
+            UpdateText();
+        }
 
-            textToAddAfter = "";
-            textToAddBefore = "";
-
-            textToReplace = "";
-            replaceTextWith = "";
-
-    }
-
+        //after name radio dial selected
         private void AfterName_Checked(object sender, RoutedEventArgs e)
         {
             UpdateText();
         }
 
+        //before name radio dial selected
         private void BeforeName_Checked(object sender, RoutedEventArgs e)
         {
             UpdateText();
         }
 
+        //text changes in the text to replace box
         private void TextToReplace_Box_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateText();
         }
 
+        //text changes in the replace text with box
         private void ReplaceTextWith_Box_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateText();

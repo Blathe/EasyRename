@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyRename"
         mc:Ignorable="d"
-        Title="Easy Rename" Height="251" Width="593" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop">
+        Title="EasyRename" Height="251" Width="593" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop" Icon="programicon.png">
     <Grid Background="#FFECECEC">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*"/>
@@ -36,7 +36,7 @@
             <ListBoxItem Content="Add Text"/>
             <ListBoxItem Content="Replace Text"/>
         </ComboBox>
-        <TextBlock x:Name="Example_Title" HorizontalAlignment="Left" Margin="20,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="55" FontSize="14" Height="23" Foreground="Black" FontFamily="Segoe UI Semibold"><Run Text="Example"/><Run Text=": "/></TextBlock>
+        <TextBlock x:Name="Example_Title" HorizontalAlignment="Left" Margin="20,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="61" FontSize="14" Height="23" Foreground="Black" FontFamily="Segoe UI Semibold" Text="Example:"/>
         <TextBlock x:Name="Example_Text" HorizontalAlignment="Left" Margin="22,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" FontSize="14" Grid.Column="1" RenderTransformOrigin="0.4,0.602" Height="23" Foreground="Black" FontFamily="Segoe UI Semibold"/>
 
     </Grid>

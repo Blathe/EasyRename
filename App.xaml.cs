@@ -20,6 +20,21 @@ namespace EasyRename
         {
             MainWindow wnd = new MainWindow();
             wnd.Show();
+
+            try
+            {
+                foreach (string file in e.Args)
+                {
+                    wnd.fileList.Add(file);
+                }
+
+                wnd.RefreshDisplayBox();
+                wnd.RefreshExampleText();
+                wnd.SetExampleFile();
+            } catch (Exception ex)
+            {
+                wnd.NotifyException(ex);
+            }
         }
     }
 }

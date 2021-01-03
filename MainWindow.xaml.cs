@@ -21,7 +21,7 @@ namespace EasyRename
     /// </summary>
     public partial class MainWindow : Window
     {
-        //The file we will be using in the Example under the file box.
+        //The file we will be using as an Example under the file box.
         //Save the file name + extension separately so we can format text easier.
         public string exampleFile;
         public string exampleFileExtension;
@@ -47,6 +47,7 @@ namespace EasyRename
         public List<string> filesToRemove = new List<string>();
         public List<string> filesToAdd = new List<string>();
 
+        //Chars that Windows doesn't allow in file names.
         private string invalidCharPattern = "[\\<>:/\"|?*]";
 
         public MainWindow()

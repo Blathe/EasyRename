@@ -108,5 +108,8 @@
   <ItemGroup>
     <Resource Include="Cloud.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="programicon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

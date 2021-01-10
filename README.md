@@ -1,5 +1,5 @@
 # EasyRename
-EasyRename is a simple multi file rename tool for Windows inspired by MacOS multi rename.
+EasyRename is a simple multi file rename tool built with C# and WPF for Windows that was inspired by Mac's ability to easily rename multiple files.
 
 Run the program, drag and drop as many files as you want onto the program, and then select the way in which you want to rename multiple files.
  
@@ -8,7 +8,4 @@ V1.0 Features:
 -Drag and Drop multi files  
 -Add Text Before/After file name  
 -Replace Text with other text  
--Basic validation for invalid file names  
- 
-
-[![EasyRename.gif](https://s8.gifyu.com/images/EasyRename.gif)](https://gifyu.com/image/CoPN)
+-Basic validation for invalid file names

@@ -10,4 +10,4 @@ V1.0 Features:
 -Replace Text with other text  
 -Basic validation for invalid file names
 
-Updated product icon by FlatIcon - Flaticon.com
+Updated program icon by FlatIcon - Flaticon.com

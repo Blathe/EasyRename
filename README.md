@@ -8,7 +8,4 @@ V1.0 Features:
 -Drag and Drop multi files  
 -Add Text Before/After file name  
 -Replace Text with other text  
--Basic validation for invalid file names  
- 
-
-[![EasyRename.gif](https://s8.gifyu.com/images/EasyRename.gif)](https://gifyu.com/image/CoPN)
+-Basic validation for invalid file names

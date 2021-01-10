@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyRename"
         mc:Ignorable="d"
-        Title="EasyRename" Height="251" Width="593" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop" Icon="programicon.png">
+        Title="EasyRename" Height="251" Width="593" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="WindowDrop" Icon="Icon.png">
     <Grid Background="#FFECECEC">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60*"/>

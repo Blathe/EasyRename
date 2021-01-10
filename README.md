@@ -9,3 +9,5 @@ V1.0 Features:
 -Add Text Before/After file name  
 -Replace Text with other text  
 -Basic validation for invalid file names
+
+Updated product icon by FlatIcon - Flaticon.com

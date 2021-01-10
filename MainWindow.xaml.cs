@@ -98,37 +98,43 @@ namespace EasyRename
         {
             if (exampleFile != null)
             {
-                if (AfterName.IsChecked == true)
+                if (RenameSelectionBox.SelectedIndex == 0)
                 {
-                    //Reset the example text, then add the text input after the file name.
-                    Example_Text.Text = "";
-                    fileName = exampleFile;
-                    textToAddAfter = TextToAdd_Box.Text;
-                    exampleString = fileName + textToAddAfter + exampleFileExtension;
-                    Example_Text.Text = exampleString;
-                }
-
-                if (BeforeName.IsChecked == true)
-                {
-                    //Reset the example text, then add the text input before the file name.
-                    Example_Text.Text = "";
-                    fileName = exampleFile;
-                    textToAddBefore = TextToAdd_Box.Text;
-                    exampleString = textToAddBefore + fileName + exampleFileExtension;
-                    Example_Text.Text = exampleString;
-                }
-
-                if (RenameSelectionBox.SelectedIndex == 1)
-                {
-                    Example_Text.Text = "";
-                    textToReplace = TextToReplace_Box.Text;
-                    replaceTextWith = ReplaceTextWith_Box.Text;
-                    Example_Text.Text = exampleFile + exampleFileExtension;
-
-                    if (textToReplace != "")
+                    switch (BeforeOrAfter_ComboBox.SelectedIndex)
                     {
-                        exampleString = exampleFile.Replace(textToReplace, replaceTextWith);
-                        Example_Text.Text = exampleString + exampleFileExtension;
+                        //Add text after name
+                        case 0:
+                            //Reset the example text, then add the text input after the file name.
+                            Example_Text.Text = "";
+                            fileName = exampleFile;
+                            textToAddAfter = TextToAdd_Box.Text;
+                            exampleString = fileName + textToAddAfter + exampleFileExtension;
+                            Example_Text.Text = exampleString;
+                            break;
+                        //Add text before name
+                        case 1:
+                            //Reset the example text, then add the text input before the file name.
+                            Example_Text.Text = "";
+                            fileName = exampleFile;
+                            textToAddBefore = TextToAdd_Box.Text;
+                            exampleString = textToAddBefore + fileName + exampleFileExtension;
+                            Example_Text.Text = exampleString;
+                            break;
+                    }
+                } else
+                {
+                    if (RenameSelectionBox.SelectedIndex == 1)
+                    {
+                        Example_Text.Text = "";
+                        textToReplace = TextToReplace_Box.Text;
+                        replaceTextWith = ReplaceTextWith_Box.Text;
+                        Example_Text.Text = exampleFile + exampleFileExtension;
+
+                        if (textToReplace != "")
+                        {
+                            exampleString = exampleFile.Replace(textToReplace, replaceTextWith);
+                            Example_Text.Text = exampleString + exampleFileExtension;
+                        }
                     }
                 }
             }
@@ -179,44 +185,47 @@ namespace EasyRename
                         {
                             foreach (string file in fileList)
                             {
-                                //Add text to end of file name.
-                                if (AfterName.IsChecked == true)
-                                {
-                                    fileName = System.IO.Path.GetFileNameWithoutExtension(file);
-                                    fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
-                                    fileExtension = System.IO.Path.GetExtension(file);
-                                    string newName = fileDirectory + fileName + TextToAdd_Box.Text + fileExtension;
+                                string newName;
 
-                                    try
-                                    {
-                                        System.IO.File.Move(file, newName);
-                                    } catch (Exception ex)
-                                    {
-                                        NotifyException(ex);
-                                    }
-                                    filesToRemove.Add(file);
-                                    filesToAdd.Add(newName);
-                                    numberOfFilesRenamed++;
-                                }
-                                //Add text to beginning of file name.
-                                if (BeforeName.IsChecked == true)
+                                switch (BeforeOrAfter_ComboBox.SelectedIndex)
                                 {
-                                    fileName = System.IO.Path.GetFileNameWithoutExtension(file);
-                                    fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
-                                    fileExtension = System.IO.Path.GetExtension(file);
-                                    string newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
+                                    //After Name
+                                    case 0:
+                                        fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                                        fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
+                                        fileExtension = System.IO.Path.GetExtension(file);
+                                        newName = fileDirectory + fileName + TextToAdd_Box.Text + fileExtension;
 
-                                    try
-                                    {
-                                        System.IO.File.Move(file, newName);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        NotifyException(ex);
-                                    }
-                                    filesToRemove.Add(file);
-                                    filesToAdd.Add(newName);
-                                    numberOfFilesRenamed++;
+                                        try
+                                        {
+                                            System.IO.File.Move(file, newName);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            NotifyException(ex);
+                                        }
+                                        filesToRemove.Add(file);
+                                        filesToAdd.Add(newName);
+                                        numberOfFilesRenamed++;
+                                        break;
+                                    case 1:
+                                        fileName = System.IO.Path.GetFileNameWithoutExtension(file);
+                                        fileDirectory = System.IO.Path.GetDirectoryName(file) + "\\";
+                                        fileExtension = System.IO.Path.GetExtension(file);
+                                        newName = fileDirectory + TextToAdd_Box.Text + fileName + fileExtension;
+
+                                        try
+                                        {
+                                            System.IO.File.Move(file, newName);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            NotifyException(ex);
+                                        }
+                                        filesToRemove.Add(file);
+                                        filesToAdd.Add(newName);
+                                        numberOfFilesRenamed++;
+                                        break;
                                 }
                             }
                             RefreshFileList();
@@ -413,6 +422,11 @@ namespace EasyRename
 
         //text changes in the replace text with box
         private void ReplaceTextWith_Box_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RefreshExampleText();
+        }
+
+        private void BeforeOrAfter_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RefreshExampleText();
         }
